@@ -3,9 +3,10 @@ import torch.nn as nn
 
 
 from ..utils import * 
-from .blocks import TCNBlock, AnalogTCNBlock
+from .blocks import GCNBlock, AnalogGCNBlock
 
-class SnapshotTCN(nn.Module):
+
+class SnapShotGCN(nn.Module):
     def __init__(
         self,
         n_inp: int, 
@@ -40,7 +41,7 @@ class SnapshotTCN(nn.Module):
             dilation = dilation_growth ** n 
             bias = False if n == 0 else True
             self.blocks.append(
-                TCNBlock(
+                GCNBlock(
                     in_ch, 
                     out_ch, 
                     n_cond = 0,
@@ -51,16 +52,28 @@ class SnapshotTCN(nn.Module):
                     hypered = False,
                     bias = bias))
 
-        self.output = torch.nn.Conv1d(out_ch, self.n_output, kernel_size=1)
+
+        # output mixing layer
+        self.mixing_output = torch.nn.Conv1d(
+            in_channels=self.n_channels * n_blocks,
+            out_channels=self.n_output,
+            kernel_size=1,
+            stride=1,
+            padding=0,
+            bias=False
+        )
 
     def forward(self, x, c, *args):
         
+        skips = []
         # iterate over blocks passing conditioning
         for _, block in enumerate(self.blocks):
-            x = block(x, None)
+            x, zn = block(x, None)
+            skips.append(zn)
         
-        # out
-        out = self.output(x)
+        z = torch.cat([s[:, :, -x.size(2):] for s in skips], dim=1)
+
+        out = self.mixing_output(z)
         
         return out
 
@@ -74,8 +87,8 @@ class SnapshotTCN(nn.Module):
 
     def compute_num_of_params(self):
         return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
-    
-class SnapshotAnalogTCN(nn.Module):
+
+class SnapShotAnalogGCN(nn.Module):
     def __init__(
         self,
         n_inp: int, 
@@ -87,6 +100,7 @@ class SnapshotAnalogTCN(nn.Module):
         dilation_growth: int = 2, 
         n_channels: int = 16, 
         causal: bool = True,  
+        n_samples: int = 640
     ):
         super().__init__()
 
@@ -110,27 +124,39 @@ class SnapshotAnalogTCN(nn.Module):
             dilation = dilation_growth ** n 
             bias = False if n == 0 else True
             self.blocks.append(
-                AnalogTCNBlock(
+                AnalogGCNBlock(
                     in_ch, 
                     out_ch, 
                     n_cond = 0,
                     kernel_size= kernel_size, 
                     dilation=dilation,
                     causal=causal,
-                    bias = bias))
+                    bias = bias,
+                    n_samples = n_samples))
 
-        self.output = torch.nn.Conv1d(out_ch, self.n_output, kernel_size=1)
+
+        # output mixing layer
+        self.mixing_output = torch.nn.Conv1d(
+            in_channels=self.n_channels * n_blocks,
+            out_channels=self.n_output,
+            kernel_size=1,
+            stride=1,
+            padding=0,
+            bias=False
+        )
 
         self.prepare(self.sample_rate, self.kernel_size, 1)
-
     def forward(self, x, c, *args):
         
+        skips = []
         # iterate over blocks passing conditioning
         for _, block in enumerate(self.blocks):
-            x = block(x, None)
+            x, zn = block(x, None)
+            skips.append(zn)
         
-        # out
-        out = self.output(x)
+        z = torch.cat([s[:, :, -x.size(2):] for s in skips], dim=1)
+
+        out = self.mixing_output(z)
         
         return out
 
@@ -144,12 +170,12 @@ class SnapshotAnalogTCN(nn.Module):
 
     def compute_num_of_params(self):
         return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
-    
+
     def prepare(self, sample_rate, kernel_size, stride):
         for b in self.blocks:
             b.prepare(sample_rate, kernel_size, stride)
 
-class ConcatTCN(nn.Module):
+class ConcatGCN(nn.Module):
     def __init__(
         self,
         n_inp: int, 
@@ -184,7 +210,7 @@ class ConcatTCN(nn.Module):
             dilation = dilation_growth ** n 
             bias = False if n == 0 else True
             self.blocks.append(
-                TCNBlock(
+                GCNBlock(
                     in_ch, 
                     out_ch, 
                     n_cond = 0,
@@ -195,7 +221,16 @@ class ConcatTCN(nn.Module):
                     hypered = False,
                     bias = bias))
 
-        self.output = torch.nn.Conv1d(out_ch, self.n_output, kernel_size=1)
+
+        # output mixing layer
+        self.mixing_output = torch.nn.Conv1d(
+            in_channels=self.n_channels * n_blocks,
+            out_channels=self.n_output,
+            kernel_size=1,
+            stride=1,
+            padding=0,
+            bias=False
+        )
 
     def forward(self, x, c, *args):
 
@@ -207,12 +242,15 @@ class ConcatTCN(nn.Module):
         if self.n_cond > 0:
             x = torch.cat((x, c), dim=1)
         
+        skips = []
         # iterate over blocks passing conditioning
         for _, block in enumerate(self.blocks):
-            x = block(x, None)
+            x, zn = block(x, None)
+            skips.append(zn)
         
-        # out
-        out = self.output(x)
+        z = torch.cat([s[:, :, -x.size(2):] for s in skips], dim=1)
+
+        out = self.mixing_output(z)
         
         return out
 
@@ -227,7 +265,7 @@ class ConcatTCN(nn.Module):
     def compute_num_of_params(self):
         return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
     
-class FiLMTCN(nn.Module):
+class FiLMGCN(nn.Module):
     def __init__(
         self,
         n_inp: int, 
@@ -277,7 +315,7 @@ class FiLMTCN(nn.Module):
             dilation = dilation_growth ** n 
             bias = False if n == 0 else True
             self.blocks.append(
-                TCNBlock(
+                GCNBlock(
                     in_ch, 
                     out_ch, 
                     n_cond = pre_film_size,
@@ -288,19 +326,30 @@ class FiLMTCN(nn.Module):
                     hypered = False,
                     bias = bias))
 
-        self.output = torch.nn.Conv1d(out_ch, self.n_output, kernel_size=1)
+        # output mixing layer
+        self.mixing_output = torch.nn.Conv1d(
+            in_channels=self.n_channels * n_blocks,
+            out_channels=self.n_output,
+            kernel_size=1,
+            stride=1,
+            padding=0,
+            bias=False
+        )
 
     def forward(self, x, c, *args):
         
         if self.pre_film is not None and self.n_cond > 0:
             c = self.pre_film(c)
         
+        skips = []
         # iterate over blocks passing conditioning
         for _, block in enumerate(self.blocks):
-            x = block(x, c)
+            x, zn = block(x, c)
+            skips.append(zn)
         
-        # out
-        out = self.output(x)
+        z = torch.cat([s[:, :, -x.size(2):] for s in skips], dim=1)
+
+        out = self.mixing_output(z)
         
         return out
 
@@ -315,7 +364,7 @@ class FiLMTCN(nn.Module):
     def compute_num_of_params(self):
         return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
 
-class HyperTCN(nn.Module):
+class HyperGCN(nn.Module):
     def __init__(
         self,
         n_inp: int, 
@@ -350,7 +399,7 @@ class HyperTCN(nn.Module):
             dilation = dilation_growth ** n 
             bias = False if n == 0 else True
             self.blocks.append(
-                TCNBlock(
+                GCNBlock(
                     in_ch, 
                     out_ch, 
                     n_cond = n_cond,
@@ -361,16 +410,27 @@ class HyperTCN(nn.Module):
                     hypered = True,
                     bias = bias))
 
-        self.output = torch.nn.Conv1d(out_ch, self.n_output, kernel_size=1)
+        # output mixing layer
+        self.mixing_output = torch.nn.Conv1d(
+            in_channels=self.n_channels * n_blocks,
+            out_channels=self.n_output,
+            kernel_size=1,
+            stride=1,
+            padding=0,
+            bias=False
+        )
 
     def forward(self, x, c, *args):
         
+        skips = []
         # iterate over blocks passing conditioning
         for _, block in enumerate(self.blocks):
-            x = block(x, c)
+            x, zn = block(x, c)
+            skips.append(zn)
         
-        # out
-        out = self.output(x)
+        z = torch.cat([s[:, :, -x.size(2):] for s in skips], dim=1)
+
+        out = self.mixing_output(z)
         
         return out
 
@@ -384,5 +444,6 @@ class HyperTCN(nn.Module):
 
     def compute_num_of_params(self):
         return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
+
 
 

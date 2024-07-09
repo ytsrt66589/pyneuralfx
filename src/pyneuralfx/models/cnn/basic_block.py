@@ -53,8 +53,8 @@ class HyperConv(nn.Module):
                 nn.LeakyReLU(0.2, inplace=True),
                 nn.Linear(self.in_ch, self.out_ch, bias=True)
             )
+        
 
-    
     def forward(self, x, p):
         B = x.shape[0]
         tp = p.unsqueeze(-1)
