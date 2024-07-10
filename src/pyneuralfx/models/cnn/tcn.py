@@ -1,11 +1,12 @@
 import torch 
 import torch.nn as nn 
 
-
+from ..base import CNN_Base
 from ..utils import * 
 from .blocks import TCNBlock, AnalogTCNBlock
 
-class SnapshotTCN(nn.Module):
+
+class SnapshotTCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
@@ -18,7 +19,7 @@ class SnapshotTCN(nn.Module):
         n_channels: int = 16, 
         causal: bool = True,  
     ):
-        super().__init__()
+        super().__init__(kernel_size, sample_rate, dilation_growth, n_blocks)
 
         # args 
         self.n_inp = n_inp
@@ -75,7 +76,7 @@ class SnapshotTCN(nn.Module):
     def compute_num_of_params(self):
         return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
     
-class SnapshotAnalogTCN(nn.Module):
+class SnapshotAnalogTCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
@@ -88,7 +89,7 @@ class SnapshotAnalogTCN(nn.Module):
         n_channels: int = 16, 
         causal: bool = True,  
     ):
-        super().__init__()
+        super().__init__(kernel_size, sample_rate, dilation_growth, n_blocks)
 
         # args 
         self.n_inp = n_inp
@@ -149,7 +150,7 @@ class SnapshotAnalogTCN(nn.Module):
         for b in self.blocks:
             b.prepare(sample_rate, kernel_size, stride)
 
-class ConcatTCN(nn.Module):
+class ConcatTCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
@@ -162,7 +163,7 @@ class ConcatTCN(nn.Module):
         n_channels: int = 16, 
         causal: bool = True,  
     ):
-        super().__init__()
+        super().__init__(kernel_size, sample_rate, dilation_growth, n_blocks)
 
         # args 
         self.n_inp = n_inp
@@ -227,7 +228,7 @@ class ConcatTCN(nn.Module):
     def compute_num_of_params(self):
         return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
     
-class FiLMTCN(nn.Module):
+class FiLMTCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
@@ -242,7 +243,7 @@ class FiLMTCN(nn.Module):
         pre_film_size: int = 16,
         pre_film_blocks: int = 3,
     ):
-        super().__init__()
+        super().__init__(kernel_size, sample_rate, dilation_growth, n_blocks)
 
         # args 
         self.n_inp = n_inp
@@ -315,7 +316,7 @@ class FiLMTCN(nn.Module):
     def compute_num_of_params(self):
         return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
 
-class HyperTCN(nn.Module):
+class HyperTCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
@@ -328,7 +329,7 @@ class HyperTCN(nn.Module):
         n_channels: int = 16, 
         causal: bool = True, 
     ):
-        super().__init__()
+        super().__init__(kernel_size, sample_rate, dilation_growth, n_blocks)
 
         # args 
         self.n_inp = n_inp

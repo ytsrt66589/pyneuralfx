@@ -1,12 +1,12 @@
 import torch 
 import torch.nn as nn 
 
-
+from ..base import CNN_Base
 from ..utils import * 
 from .blocks import GCNBlock, AnalogGCNBlock
 
 
-class SnapShotGCN(nn.Module):
+class SnapShotGCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
@@ -19,7 +19,7 @@ class SnapShotGCN(nn.Module):
         n_channels: int = 16, 
         causal: bool = True,  
     ):
-        super().__init__()
+        super().__init__(kernel_size, sample_rate, dilation_growth, n_blocks)
 
         # args 
         self.n_inp = n_inp
@@ -77,18 +77,7 @@ class SnapShotGCN(nn.Module):
         
         return out
 
-    def compute_receptive_field(self): # in samples 
-        rf = self.kernel_size
-        for n in range(1, self.n_blocks):
-            dilation = self.dilation_growth ** n
-            rf = rf + ((self.kernel_size-1) * dilation)
-        return rf, rf/self.sample_rate * 1000 # samples, ms
-    
-
-    def compute_num_of_params(self):
-        return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
-
-class SnapShotAnalogGCN(nn.Module):
+class SnapShotAnalogGCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
@@ -102,7 +91,7 @@ class SnapShotAnalogGCN(nn.Module):
         causal: bool = True,  
         n_samples: int = 640
     ):
-        super().__init__()
+        super().__init__(kernel_size, sample_rate, dilation_growth, n_blocks)
 
         # args 
         self.n_inp = n_inp
@@ -146,6 +135,7 @@ class SnapShotAnalogGCN(nn.Module):
         )
 
         self.prepare(self.sample_rate, self.kernel_size, 1)
+
     def forward(self, x, c, *args):
         
         skips = []
@@ -160,22 +150,11 @@ class SnapShotAnalogGCN(nn.Module):
         
         return out
 
-    def compute_receptive_field(self): # in samples 
-        rf = self.kernel_size
-        for n in range(1, self.n_blocks):
-            dilation = self.dilation_growth ** n
-            rf = rf + ((self.kernel_size-1) * dilation)
-        return rf, rf/self.sample_rate * 1000 # samples, ms
-    
-
-    def compute_num_of_params(self):
-        return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
-
     def prepare(self, sample_rate, kernel_size, stride):
         for b in self.blocks:
             b.prepare(sample_rate, kernel_size, stride)
 
-class ConcatGCN(nn.Module):
+class ConcatGCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
@@ -188,7 +167,7 @@ class ConcatGCN(nn.Module):
         n_channels: int = 16, 
         causal: bool = True,  
     ):
-        super().__init__()
+        super().__init__(kernel_size, sample_rate, dilation_growth, n_blocks)
 
         # args 
         self.n_inp = n_inp
@@ -253,19 +232,8 @@ class ConcatGCN(nn.Module):
         out = self.mixing_output(z)
         
         return out
-
-    def compute_receptive_field(self): # in samples 
-        rf = self.kernel_size
-        for n in range(1, self.n_blocks):
-            dilation = self.dilation_growth ** n
-            rf = rf + ((self.kernel_size-1) * dilation)
-        return rf, rf/self.sample_rate * 1000 # samples, ms
     
-
-    def compute_num_of_params(self):
-        return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
-    
-class FiLMGCN(nn.Module):
+class FiLMGCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
@@ -280,7 +248,7 @@ class FiLMGCN(nn.Module):
         pre_film_size: int = 16,
         pre_film_blocks: int = 3,
     ):
-        super().__init__()
+        super().__init__(kernel_size, sample_rate, dilation_growth, n_blocks)
 
         # args 
         self.n_inp = n_inp
@@ -353,18 +321,8 @@ class FiLMGCN(nn.Module):
         
         return out
 
-    def compute_receptive_field(self): # in samples 
-        rf = self.kernel_size
-        for n in range(1, self.n_blocks):
-            dilation = self.dilation_growth ** n
-            rf = rf + ((self.kernel_size-1) * dilation)
-        return rf, rf/self.sample_rate * 1000 # samples, ms
-    
 
-    def compute_num_of_params(self):
-        return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
-
-class HyperGCN(nn.Module):
+class HyperGCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
@@ -377,7 +335,7 @@ class HyperGCN(nn.Module):
         n_channels: int = 16, 
         causal: bool = True, 
     ):
-        super().__init__()
+        super().__init__(kernel_size, sample_rate, dilation_growth, n_blocks)
 
         # args 
         self.n_inp = n_inp
@@ -434,16 +392,6 @@ class HyperGCN(nn.Module):
         
         return out
 
-    def compute_receptive_field(self): # in samples 
-        rf = self.kernel_size
-        for n in range(1, self.n_blocks):
-            dilation = self.dilation_growth ** n
-            rf = rf + ((self.kernel_size-1) * dilation)
-        return rf, rf/self.sample_rate * 1000 # samples, ms
-    
-
-    def compute_num_of_params(self):
-        return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
 
 
 
