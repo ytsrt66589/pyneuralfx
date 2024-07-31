@@ -6,12 +6,11 @@ from ..utils import *
 from .blocks import TCNBlock, AnalogTCNBlock
 
 
-class SnapshotTCN(CNN_Base):
+class SnapShotTCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 
         n_output: int, 
-        n_cond: int,
         sample_rate: int,
         n_blocks: int = 9, 
         kernel_size: int = 3, 
@@ -76,7 +75,7 @@ class SnapshotTCN(CNN_Base):
     def compute_num_of_params(self):
         return (sum(p.numel() for p in self.parameters()), sum(p.numel() for p in self.parameters() if p.requires_grad))
     
-class SnapshotAnalogTCN(CNN_Base):
+class SnapShotAnalogTCN(CNN_Base):
     def __init__(
         self,
         n_inp: int, 

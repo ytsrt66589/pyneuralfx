@@ -23,13 +23,14 @@ class CNN_Base(NN_Base):
         self.dilation_growth = dilation_growth
         self.n_blocks = n_blocks
 
+        
     def compute_receptive_field(self): # in samples 
         rf = self.kernel_size
         for n in range(1, self.n_blocks):
             dilation = self.dilation_growth ** n
             rf = rf + ((self.kernel_size-1) * dilation)
-        return rf, rf/self.sample_rate * 1000 # samples, ms
-    
+        
+        return rf, (rf/self.sample_rate) * 1000 # samples, ms
 
 class RNN_Base(NN_Base):
     def __init__(self, sample_rate):
@@ -37,4 +38,4 @@ class RNN_Base(NN_Base):
         self.sample_rate = sample_rate
 
     def compute_receptive_field(self): # in samples 
-        return 1, 1/self.sample_rate * 1000 # samples, ms
+        return 1, (1/self.sample_rate) * 1000 # samples, ms

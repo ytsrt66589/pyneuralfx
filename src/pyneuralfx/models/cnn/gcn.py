@@ -11,7 +11,6 @@ class SnapShotGCN(CNN_Base):
         self,
         n_inp: int, 
         n_output: int, 
-        n_cond: int,
         sample_rate: int,
         n_blocks: int = 9, 
         kernel_size: int = 3, 
@@ -320,7 +319,6 @@ class FiLMGCN(CNN_Base):
         out = self.mixing_output(z)
         
         return out
-
 
 class HyperGCN(CNN_Base):
     def __init__(

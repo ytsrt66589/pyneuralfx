@@ -64,13 +64,12 @@ class HyperConv(nn.Module):
             x[:, :, start-i*self.dilation:end-i*self.dilation] for i in range(self.kernel_size)
         ], dim=1)
         x = x.permute(0, 2, 1).contiguous().view(x.shape[0] * tp.shape[-1], x.shape[-1]//tp.shape[-1], x.shape[1])
-        weight = self.kernel_subnet(p.squeeze(-1)).view(B, self.in_ch * self.kernel_size, self.out_ch, tp.shape[-1]) # linear
+        weight = self.kernel_subnet(p).view(B, self.in_ch * self.kernel_size, self.out_ch, tp.shape[-1]) # linear
         weight = weight.permute(0, 3, 1, 2).contiguous().view(B * tp.shape[-1], self.in_ch * self.kernel_size, self.out_ch)
-        
         y = torch.bmm(x, weight)
 
         if self.bias:
-            bias = self.bias_subnet(p.squeeze(-1)).view(B, self.out_ch, tp.shape[-1])
+            bias = self.bias_subnet(p).view(B, self.out_ch, tp.shape[-1])
             bias = bias.permute(0, 2, 1).contiguous().view(B * tp.shape[-1], self.out_ch)
             y = y + bias[:, None, :]
         y = y.view(B, -1, self.out_ch).permute(0, 2, 1).contiguous()
