@@ -143,3 +143,6 @@ dmypy.json
 
 # wav 
 *.wav
+
+# 
+frame_work/exp/*
