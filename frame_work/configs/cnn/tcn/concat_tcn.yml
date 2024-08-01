@@ -1,0 +1,38 @@
+data:
+  buffer_size: 2048
+  sampling_rate: 48000
+  inp_channels: 1
+  out_channels: 1
+  num_conds: 2
+  norm_tensor: [[0, 4], [0, 4]]
+  train_path: data/overdrive/boss_od3/train
+  valid_path: data/overdrive/boss_od3/valid
+  test_path: data/overdrive/boss_od3/test
+model:
+  arch: concat-tcn
+  n_blocks: 9
+  kernel_size: 3
+  dilation_growth: 2
+  n_channels: 16
+  causal: True 
+loss:
+  loss_func: hybrid_loss
+  pre_emp: True 
+device: cuda
+env:
+  expdir: exp/boss_od3/concat_tcn_16
+  gpu: 0
+  gpu_id: 0
+  is_jit: False
+  debug_mode: True
+inference:
+  batch_size: 1
+train:
+  batch_size: 80
+  epochs: 1
+  interval_log: 10
+  interval_ckpt: 1500
+  interval_val: 1500
+  lr_patience: 2
+  improvement_patience: 4 
+  lr: 0.001
