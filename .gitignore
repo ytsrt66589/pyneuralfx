@@ -143,7 +143,9 @@ dmypy.json
 
 # wav 
 *.wav
+*.mp3 
 
 # 
 frame_work/exp/*
 frame_work/visual_devs/*
+frame_work/data/test_demo/
