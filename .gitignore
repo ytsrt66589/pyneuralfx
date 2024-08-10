@@ -143,6 +143,8 @@ dmypy.json
 
 # wav 
 *.wav
+!frame_work/example_wavs/snapshot_examples/input.wav
+!frame_work/example_wavs/snapshot_examples/output.wav
 !frame_work/example_wavs/example.wav
 *.mp3 
 
