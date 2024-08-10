@@ -52,17 +52,17 @@ def make_loss_report(
     
 if __name__ == '__main__':
     
-
+    base_dir = './exp/boss_od3'
+    path_fig = './loss_analysis/compare_result.png'
     exp_list = [
-        
+        (os.path.join(base_dir, 'concat_gru_32'), 'concat_gru'), 
+        (os.path.join(base_dir, 'film_gru_32'), 'film_gru'), 
+        (os.path.join(base_dir, 'statichyper_gru_32'), 'statichyper_gru'), 
+        (os.path.join(base_dir, 'dynamichyper_gru_32'), 'dynamichyper_gru'), 
     ]   
     
-    make_loss_report(exp_list, f'Validation Loss Comparison')
+    make_loss_report(exp_list, f'Validation Loss Comparison', path_fig)
 
     
-    
-    
 
-    
-    
-    
+

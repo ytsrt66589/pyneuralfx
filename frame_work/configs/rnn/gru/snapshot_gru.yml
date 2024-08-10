@@ -1,25 +1,25 @@
 data:
-  buffer_size: 2048
-  sampling_rate: 48000
+  buffer_size: 8192
+  sampling_rate: 44100
   inp_channels: 1
   out_channels: 1
-  train_x_path: /home/yytung/projects/pyneuralfx/frame_work/data/overdrive/boss_od3/train/x/x_d0_t0.wav
-  train_y_path: /home/yytung/projects/pyneuralfx/frame_work/data/overdrive/boss_od3/train/y/y_d0_t0.wav
-  valid_x_path: /home/yytung/projects/pyneuralfx/frame_work/data/overdrive/boss_od3/train/x/x_d0_t0.wav
-  valid_y_path: /home/yytung/projects/pyneuralfx/frame_work/data/overdrive/boss_od3/train/y/y_d0_t0.wav
-  test_x_path: /home/yytung/projects/pyneuralfx/frame_work/data/overdrive/boss_od3/train/x/x_d0_t0.wav
-  test_y_path: /home/yytung/projects/pyneuralfx/frame_work/data/overdrive/boss_od3/train/y/y_d0_t0.wav
+  train_x_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/x_train.wav
+  train_y_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/y_train.wav
+  valid_x_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/x_valid.wav
+  valid_y_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/y_valid.wav
+  test_x_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/x_test.wav
+  test_y_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/y_test.wav
 model: 
   arch: snapshot-gru
   main_rnn_hidden_size: 16
   layer_norm: False
   rnn_bias: True 
 loss:
-  loss_func: hybrid_loss
+  loss_func: esr_trans_loss
   pre_emp: True 
 device: cuda
 env:
-  expdir: exp/boss_od3/snapshot_gru
+  expdir: exp/transient_awared/gru_esr_trans
   gpu: 0
   gpu_id: 0
   is_jit: False
@@ -27,11 +27,11 @@ env:
 inference:
   batch_size: 1
 train:
-  batch_size: 80
-  epochs: 1
+  batch_size: 25
+  epochs: 500
   interval_log: 10
-  interval_ckpt: 1500
-  interval_val: 1500
+  interval_ckpt: 450
+  interval_val: 450
   lr_patience: 2
-  improvement_patience: 4 
+  improvement_patience: 6
   lr: 0.001

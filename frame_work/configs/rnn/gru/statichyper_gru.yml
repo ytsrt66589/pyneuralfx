@@ -10,17 +10,17 @@ data:
   test_path: data/overdrive/boss_od3/test
 model:
   arch: statichyper-gru
-  main_rnn_hidden_size: 16
+  main_rnn_hidden_size: 32
   layer_norm: False
   rnn_bias: True 
-  n_mlp_blocks: 3
-  mlp_size: 16
+  n_mlp_blocks: 2
+  mlp_size: 8
 loss:
   loss_func: hybrid_loss
   pre_emp: True 
 device: cuda
 env:
-  expdir: exp/boss_od3/statichyper_gru_16
+  expdir: exp/boss_od3/statichyper_gru_32
   gpu: 0
   gpu_id: 0
   is_jit: False
@@ -29,7 +29,7 @@ inference:
   batch_size: 1
 train:
   batch_size: 80
-  epochs: 1
+  epochs: 100
   interval_log: 10
   interval_ckpt: 1500
   interval_val: 1500

@@ -1,4 +1,7 @@
 import os 
+import sys 
+sys.path.append('')
+sys.path.append('..')
 import torch
 import numpy as np 
 
@@ -13,19 +16,23 @@ from dataset import Full_Modeling_AudioDataset
 # ============================================================ #
 # Load config from yaml files 
 cmd = {
-    'config': '/home/yytung/projects/pyneuralfx/frame_work/configs/rnn/gru/dynamichyper_gru.yml'
+    'config': '/home/yytung/projects/pyneuralfx/frame_work/exp/compressor/film_gcn/film_gcn.yml'
 }
-
 
 args = utils.load_config(cmd['config'])
 print(' > config:', cmd['config'])
 
+# loss functions 
+customized_loss_func = None
+# ============================================================ #
+# You can customize your own loss function here 
+# ============================================================ #
+if args.loss.loss_func == 'customized': 
+    customized_loss_func = None
 
-# loss functions
-loss_func_tra = utils.setup_loss_funcs(args) 
-loss_func_val = utils.setup_loss_funcs(args) 
+loss_func_tra = utils.setup_loss_funcs(args, customized_loss_func) 
+loss_func_val = utils.setup_loss_funcs(args, customized_loss_func) 
 loss_funcs = [loss_func_tra, loss_func_val]
-
 
 # device 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -39,6 +46,7 @@ model = utils.setup_models(args)
 # expdir
 LOAD_DIR = args.env.load_dir
 print('EXP DIR: ', args.env.expdir)
+
 
 PRE_ROOM = model.compute_receptive_field()[0] - 1
 args['model']['pre_room'] = PRE_ROOM
@@ -72,7 +80,6 @@ def collate_fn(batch):
     c_final = np.concatenate(cond_s, axis=0)
 
     return torch.from_numpy(x_final), torch.from_numpy(y_final), torch.from_numpy(c_final)
-
 
 def inference(path_to_dataset, path_savedir, exp_dir_val):
     global model
@@ -119,7 +126,7 @@ def inference(path_to_dataset, path_savedir, exp_dir_val):
 def train():
     global model
 
-    if args.load_dir:
+    if LOAD_DIR:
         print(' >>>>> fine-tuning')
         model = utils.load_model(
                 LOAD_DIR,

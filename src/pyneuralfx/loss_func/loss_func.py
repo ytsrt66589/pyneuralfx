@@ -16,6 +16,7 @@ class _Loss_Base(torch.nn.Module):
         if pre_emp:
             self.pre_emp_filter = DC_PreEmph()
 
+
     def forward(self, predict: torch.tensor, target: torch.tensor): 
         pass 
 
@@ -121,6 +122,9 @@ class STFTLoss(_Loss_Base):
         return loss_final
 
 
+#########################################
+######  Multi-resolution STFT      ######
+#########################################
 class MRSTFTCLoss(_Loss_Base):
     def __init__(
         self,
@@ -247,6 +251,7 @@ class ESRLoss(_Loss_Base):
         super().__init__(pre_emp)
         print('> [Loss] --- ESR Loss ---')
 
+        self.epsilon = 1e-12
     def forward(
         self, 
         predict: torch.tensor, 
@@ -294,15 +299,18 @@ class DCLoss(_Loss_Base):
 class HybridLoss(torch.nn.Module):
     def __init__(self, pre_emp: bool = False):
         super().__init__()
-        print('> [Loss] --- Hybrid Loss ---')
+        print('> [Loss] --- Hybrid Trans Loss ---')
 
         self.mae = L1Loss(pre_emp)
-        self.mrstft = MRSTFTLoss(pre_emp=pre_emp)
-        #self.dc_loss = DCLoss(pre_emp=pre_emp)
+        self.mrstft = STFTLoss(pre_emp=pre_emp)
+        self.trans = TransientLoss()
+        #self.mrstft_trans = MRSTFTLoss(pre_emp=False)
+        #self.l2 = L2Loss()
 
     def forward(
         self, 
         predict: torch.tensor, 
         target: torch.tensor
-    ):
-        return self.mae(predict, target) + 0.1*self.mrstft(predict, target)
+    ):  
+        return self.mae(predict, target) + 0.1*self.mrstft(predict, target) + self.trans(predict, target)
+

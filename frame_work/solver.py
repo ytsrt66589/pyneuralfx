@@ -23,7 +23,7 @@ import saver
 
 HIDDEN_INTIAL = None
 def _core(args, batch, model, h, loss_func):
-
+    
     # data 
     wav_x, wav_y, vec_c = batch 
     wav_x = wav_x.float().to(args.device)
@@ -53,7 +53,6 @@ def _core(args, batch, model, h, loss_func):
     elif utils.FORWARD_TYPES[args.model.arch] == 5:
         wav_y_pred = model(wav_x, vec_c)
     
-
     # loss
     if loss_func:
         loss = loss_func(wav_y_pred, wav_y)
@@ -94,14 +93,23 @@ def validate(
 
             # for naming only 
             if c is not None:
-                cond = utils.convert_tensor_to_numpy(c, is_squeeze=True)
+                if c.shape[-1] == 1:
+                    c = c.squeeze(0)
+                cond = utils.convert_tensor_to_numpy(c,is_squeeze=True)# 
                 condfn = []
-                for idx, subc in enumerate(cond):
-                    idx = idx % args.data.num_conds
-                    __max_cond = float(max(args.data.norm_tensor[idx]))
-                    __min_cond = float(min(args.data.norm_tensor[idx]))
+                try:
+                    for idx, subc in enumerate(cond):
+                        idx = idx % args.data.num_conds
+                        __max_cond = float(max(args.data.norm_tensor[idx]))
+                        __min_cond = float(min(args.data.norm_tensor[idx]))
+                        
+                        _tmp = ((subc + 1) / 2) * __max_cond + __min_cond
+                        condfn.append(_tmp)
+                except:
+                    __max_cond = float(max(args.data.norm_tensor[0]))
+                    __min_cond = float(min(args.data.norm_tensor[0]))
                     
-                    _tmp = ((subc + 1) / 2) * __max_cond + __min_cond
+                    _tmp = ((cond + 1) / 2) * __max_cond + __min_cond
                     condfn.append(_tmp)
             else:
                 condfn = []

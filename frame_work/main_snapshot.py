@@ -1,4 +1,7 @@
 import os 
+import sys 
+sys.path.append('')
+sys.path.append('..')
 import torch
 import numpy as np 
 
@@ -13,10 +16,8 @@ from dataset import SnapShot_AudioDataset
 # ============================================================ #
 # Load config from yaml files 
 cmd = {
-    'config': '/home/yytung/projects/pyneuralfx/frame_work/configs/rnn/lstm/snapshot_lstm.yml'
-    #'config': '/home/yytung/projects/pyneuralfx/frame_work/configs/cnn/tcn/snapshot_tcn.yml'
+    'config': '/home/yytung/projects/pyneuralfx/frame_work/configs/cnn/gcn/snapshot_gcn.yml'
 }
-
 
 args = utils.load_config(cmd['config'])
 print(' > config:', cmd['config'])

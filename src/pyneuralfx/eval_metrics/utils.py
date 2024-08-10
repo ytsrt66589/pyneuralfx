@@ -51,11 +51,6 @@ def rms_energy(x):
     return 20 * torch.log(rms.clamp(1e-8))
 
 def spectral_centroid(x):
-    """Compute the crest factor of waveform.
-
-    See: https://gist.github.com/endolith/359724
-
-    """
 
     spectrum = torch.fft.rfft(x).abs()
     normalized_spectrum = spectrum / spectrum.sum()
@@ -93,7 +88,6 @@ class DC_PreEmph(torch.nn.Module):
         target = torch.nn.functional.conv1d(target, self.pars.type_as(output), bias=None) # [B, 1, T]
 
         return output, target
-
 
 
 
@@ -215,5 +209,4 @@ class STNSeparation(torch.nn.Module):
         transition = (x >= beta_l) & (x < beta_u)
         mask[transition] = torch.sin(torch.pi/2 * (x[transition] - beta_l) / (beta_u - beta_l))**2
         return mask
-
 

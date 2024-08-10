@@ -8,7 +8,6 @@ import random
 import soundfile as sf
 from utils import traverse_dir
 
-
 class Full_Modeling_AudioDataset(torch.utils.data.Dataset):
     def __init__(
         self, 
@@ -94,7 +93,6 @@ class Full_Modeling_AudioDataset(torch.utils.data.Dataset):
                 np.array(__conds_candidates)
             )
         
-
         self.inputs = np.stack(inputs) 
         self.outputs = np.stack(outputs) 
         self.conds = np.stack(conds) 
@@ -134,6 +132,7 @@ class Full_Modeling_AudioDataset(torch.utils.data.Dataset):
     
     def __len__(self):
         return len(self.chunks)
+
 
 
 class SnapShot_AudioDataset(torch.utils.data.Dataset):

@@ -375,11 +375,19 @@ def setup_models(args):
     return model
 
 
-def setup_loss_funcs(args):
+def setup_loss_funcs(args, customized_loss_func=None):
+    if customized_loss_func is not None:
+        return customized_loss_func
+
     if args.loss.loss_func == 'esr_loss':
+        print('> ========= ESR ============== <')
         return ESRLoss(pre_emp=args.loss.pre_emp)
     elif args.loss.loss_func == 'hybrid_loss':
+        print('> ========= Hybrid ============== <')
         return HybridLoss(pre_emp=args.loss.pre_emp)
+    elif args.loss.loss_func == 'complex_stft_loss':
+        print('> ========= Complex STFT ============== <')
+        return STFTLoss()
     return None
 
 
