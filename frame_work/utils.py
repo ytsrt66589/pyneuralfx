@@ -421,3 +421,38 @@ FORWARD_TYPES = {
     'hyper-tcn': 5,
 
 }
+
+
+def forward_func(x, cond, nn_model, model_arch, device):
+    
+    wav_x = x.float().to(device)
+    model = nn_model.to(device)
+
+    vec_c = None 
+    vec_c = torch.from_numpy(
+        np.array([cond])
+    ).float().to(device)
+    
+    # initialization of hidden state 
+    h = None
+    if h is None and FORWARD_TYPES[model_arch] != 5:
+        # main network 
+        h = torch.zeros(1, wav_x.shape[0], model.rnn_size).to(wav_x.device)
+        cel = torch.zeros(1, wav_x.shape[0], model.rnn_size).to(wav_x.device)
+        if FORWARD_TYPES[model_arch] == 2 or FORWARD_TYPES[model_arch] == 4:
+            # hyper network 
+            hyper_h = torch.zeros(1, wav_x.shape[0], model.hyper_rnn_size).to(wav_x.device)
+            hyper_cel = torch.zeros(1, wav_x.shape[0], model.hyper_rnn_size).to(wav_x.device)
+    
+    if FORWARD_TYPES[model_arch] == 1:
+        wav_y_pred, h, _ = model(wav_x, vec_c, h)
+    elif FORWARD_TYPES[model_arch] == 2:
+        wav_y_pred, h, _ = model(wav_x, vec_c, h, hyper_h)
+    elif FORWARD_TYPES[model_arch] == 3:
+        wav_y_pred, h, _ = model(wav_x, vec_c, (h, cel))
+    elif FORWARD_TYPES[model_arch] == 4:
+        wav_y_pred, h, _ = model(wav_x, vec_c, (h, cel), (hyper_h, hyper_cel))
+    elif FORWARD_TYPES[model_arch] == 5:
+        wav_y_pred = model(wav_x, vec_c)
+
+    return wav_y_pred

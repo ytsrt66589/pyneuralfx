@@ -68,7 +68,7 @@ def plot_harmonic_response(path_outdir, sr, gain, freq, feed_forward_func = None
     else:
         y = feed_forward_func(x, *args, **kwargs)
     
-    y = y.squeeze(0).squeeze(0).detach().numpy()
+    y = y.squeeze(0).squeeze(0).cpu().detach().numpy()
 
     # length alignment
     pre_room = len(_subx) - len(y)
@@ -110,7 +110,7 @@ def plot_sine_sweep_response_spec(path_outdir, sr, feed_forward_func = None, *ar
     else:
         y = feed_forward_func(x, *args, **kwargs)
     
-    y = y.squeeze(0).squeeze(0).detach().numpy()
+    y = y.squeeze(0).squeeze(0).cpu().detach().numpy()
 
     # length alignment
     pre_room = len(_subx) - len(y)

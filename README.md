@@ -13,6 +13,10 @@ By using the frame work, you cam
 ```bash
 $ git clone https://github.com/ytsrt66589/pyneuralfx.git
 ```
+then 
+```bash 
+$ cd frame_work/ 
+```
 
 ## Motivation 
 Due to the rising importance of the audio effect related task, several easy-to-use toolkits are developed. For example, `dasp-package` ([repo_link](https://github.com/csteinmetz1/dasp-pytorch/tree/main)) for differetntiable signal processing in pytorch and `grafx` ([ref_link](https://github.com/sh-lee97/grafx)) for audio effect processing graph in pytorch. However, there is no easy-to-use toolkit for neural audio effect modeling task, especially for the black-box method. PyNeuralFx aims to overcome this issue, helping beginners easily start the neural audio effect modeling research and inspiring experienced researchers with different aspects. 

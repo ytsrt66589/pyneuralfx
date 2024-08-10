@@ -303,14 +303,11 @@ class HybridLoss(torch.nn.Module):
 
         self.mae = L1Loss(pre_emp)
         self.mrstft = STFTLoss(pre_emp=pre_emp)
-        self.trans = TransientLoss()
-        #self.mrstft_trans = MRSTFTLoss(pre_emp=False)
-        #self.l2 = L2Loss()
 
     def forward(
         self, 
         predict: torch.tensor, 
         target: torch.tensor
     ):  
-        return self.mae(predict, target) + 0.1*self.mrstft(predict, target) + self.trans(predict, target)
+        return self.mae(predict, target) + 0.1*self.mrstft(predict, target) 
 

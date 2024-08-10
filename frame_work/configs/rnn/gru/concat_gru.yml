@@ -18,7 +18,7 @@ loss:
   pre_emp: True 
 device: cuda
 env:
-  expdir: exp/compressor/concat_gru_8_ori
+  expdir: exp/compressor/test
   gpu: 0
   gpu_id: 0
   is_jit: False

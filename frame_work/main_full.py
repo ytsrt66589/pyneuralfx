@@ -16,7 +16,7 @@ from dataset import Full_Modeling_AudioDataset
 # ============================================================ #
 # Load config from yaml files 
 cmd = {
-    'config': '/home/yytung/projects/pyneuralfx/frame_work/exp/compressor/film_gcn/film_gcn.yml'
+    'config': './configs/rnn/gru/concat_gru.yml'
 }
 
 args = utils.load_config(cmd['config'])

@@ -16,7 +16,7 @@ from dataset import SnapShot_AudioDataset
 # ============================================================ #
 # Load config from yaml files 
 cmd = {
-    'config': '/home/yytung/projects/pyneuralfx/frame_work/configs/cnn/gcn/snapshot_gcn.yml'
+    'config': './configs/cnn/gcn/snapshot_gcn.yml'
 }
 
 args = utils.load_config(cmd['config'])
