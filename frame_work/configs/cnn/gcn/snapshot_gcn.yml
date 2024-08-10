@@ -30,10 +30,10 @@ inference:
   batch_size: 1
 train:
   batch_size: 25
-  epochs: 100
+  epochs: 20
   interval_log: 10
-  interval_ckpt: 100
-  interval_val: 100
+  interval_ckpt: 50
+  interval_val: 50
   lr_patience: 2
   improvement_patience: 6
   lr: 0.001

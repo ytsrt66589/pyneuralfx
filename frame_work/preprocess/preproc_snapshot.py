@@ -20,11 +20,11 @@ if __name__ == "__main__":
     assert (train_ratio + valid_ratio + test_ratio) == 1 
     
     # Determine the snapshot audio pair 
-    path_to_x = '' #'/home/yytung/projects/pyneuralfx/frame_work/data/overdrive/boss_od3/x/x_d2_t4.wav'
-    path_to_y = '' #'/home/yytung/projects/pyneuralfx/frame_work/data/overdrive/boss_od3/y/y_d2_t4.wav'
+    path_to_x = './example_wavs/snapshot_examples/input.wav'
+    path_to_y = './example_wavs/snapshot_examples/output.wav'
 
     # Determine where to save the data split to train/valid/test 
-    path_dir_to_save = '' #'/home/yytung/projects/pyneuralfx/frame_work/data/test_demo'
+    path_dir_to_save = './data/snapshot_modeling_example'
 
 
     os.makedirs(path_dir_to_save, exist_ok=True)

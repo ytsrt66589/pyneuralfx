@@ -17,13 +17,12 @@ SR = 44100
 REPORTED_METRICS = {
     'MRSTFTLoss': MRSTFTLoss(),
     'ESRLoss': ESRLoss(),
-    #'Transientv1': TransientPreservation(SR), 
     'Transientv2': TransientPreservation_v2(SR),
 }
 
 
 exp_names = [
-    'compressor/film_gcn', 
+    'snapshot_example', 
 ]
 
 
