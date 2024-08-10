@@ -1,14 +1,14 @@
 data:
-  buffer_size: 16384 #8192
+  buffer_size: 8192
   sampling_rate: 44100
   inp_channels: 1
   out_channels: 1
-  train_x_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/x_train.wav
-  train_y_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/y_train.wav
-  valid_x_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/x_valid.wav
-  valid_y_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/y_valid.wav
-  test_x_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/x_test.wav
-  test_y_path: /home/yytung/projects/pyneuralfx/frame_work/data/compressor/la2a_snashot/y_test.wav
+  train_x_path: ./data/snapshot_modeling_example/train/train_x.wav
+  train_y_path: ./data/snapshot_modeling_example/train/train_y.wav
+  valid_x_path: ./data/snapshot_modeling_example/valid/valid_x.wav
+  valid_y_path: ./data/snapshot_modeling_example/valid/valid_y.wav
+  test_x_path: ./data/snapshot_modeling_example/test/test_x.wav
+  test_y_path: ./data/snapshot_modeling_example/test/test_y.wav
 model:
   arch: snapshot-gcn
   n_blocks: 9
@@ -17,11 +17,11 @@ model:
   n_channels: 16
   causal: True 
 loss:
-  loss_func: 'hybrid_loss' #esr_trans_loss
+  loss_func: 'hybrid_loss' 
   pre_emp: True 
 device: cuda
 env:
-  expdir: exp/transient_awared/snapshot_gcn_trans_v2
+  expdir: exp/snapshot_example
   gpu: 0
   gpu_id: 0
   is_jit: False
@@ -30,10 +30,10 @@ inference:
   batch_size: 1
 train:
   batch_size: 25
-  epochs: 500
+  epochs: 100
   interval_log: 10
-  interval_ckpt: 450
-  interval_val: 450
+  interval_ckpt: 100
+  interval_val: 100
   lr_patience: 2
   improvement_patience: 6
   lr: 0.001

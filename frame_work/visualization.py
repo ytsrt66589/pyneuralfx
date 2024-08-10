@@ -27,8 +27,6 @@ nn_model = utils.load_model(
 
 # device 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-if device == 'cuda':
-    torch.cuda.set_device(args.env.gpu_id)
 
 # system plotting 
 plot_harmonic_response(path_outdir, args.data.sampling_rate, gain, freq, utils.forward_func, [1, 1], nn_model,  args.model.arch, device)

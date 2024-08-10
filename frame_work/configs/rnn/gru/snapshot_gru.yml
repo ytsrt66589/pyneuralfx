@@ -19,7 +19,7 @@ loss:
   pre_emp: True 
 device: cuda
 env:
-  expdir: exp/transient_awared/gru_esr_trans
+  expdir: exp/
   gpu: 0
   gpu_id: 0
   is_jit: False
