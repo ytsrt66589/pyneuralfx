@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyneuralfx"
-version = "0.1.0"
+version = "0.1.1"
 description = "A python package for neural audio effect"
 authors = ["yytung"]
 license = "MIT"
@@ -17,10 +17,9 @@ numpy = "^1.26.2"
 einops = "^0.7.0"
 pyloudnorm = "^0.1.1"
 soundfile = "^0.12.1"
-matplotlib = "3.7.0"
+matplotlib = "^3.7.0"
 librosa = "^0.10.1"
 torch-dct = "^0.1.6"
-cython = "^3.0.10"
 
 
 [[tool.poetry.source]]
