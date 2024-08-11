@@ -124,7 +124,7 @@ PyNeuralFx supports two types of visualization:
 * [ ] LA2A Compressor [downlod link](https://zenodo.org/records/3824876#.YyMaiOxBzUI), [paper link](https://arxiv.org/abs/1905.11928)
 
 * [ ] Marshall JVM 410H (Guitar Amp) [downlod link](https://zenodo.org/records/7970723), [paper link](https://www.dafx.de/paper-archive/2023/DAFx23_paper_52.pdf)
-* [ ] Boss OD-3 Overdrive [download link](not yet), [paper link](not yet)
+* [ ] Boss OD-3 Overdrive [download link](https://drive.google.com/file/d/1y3iQH94dAZbRgP33Pt4lJakgolvV7Xal/view?usp=sharing), [paper link](not yet) 
 * [ ] EGDB Guitar Amp Dataset [download link](https://drive.google.com/drive/folders/1h9DrB4dk4QstgjNaHh7lL7IMeKdYw82_), [paper link](https://arxiv.org/abs/2202.09907)
 * [ ] Compressor Datasets [download link](https://github.com/RiccardoVib/CONDITIONED-MODELING-OF-OPTICAL-COMPRESSOR?tab=readme-ov-file), [paper link](https://www.dafx.de/paper-archive/2023/DAFx23_paper_10.pdf)
 * [ ] EGFxSet [download link](https://zenodo.org/records/7044411), [project link](https://egfxset.github.io/), [paper link](https://archives.ismir.net/ismir2022/latebreaking/000006.pdf)

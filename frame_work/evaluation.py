@@ -15,9 +15,16 @@ SR = 44100
 
 
 REPORTED_METRICS = {
-    'MRSTFTLoss': MRSTFTLoss(),
+    'MRSTFTLoss': MRSTFTLoss(
+        scales=[2048]
+    ),
     'ESRLoss': ESRLoss(),
-    'Transientv2': TransientPreservation_v2(SR),
+    'Transient': TransientPreservation_v2(SR),
+    'LUFS': LUFS(sr=SR),
+    'CrestFactor': CrestFactor(),
+    'RMSEnergy': RMSEnergy(),
+    'SpectralCentroid': SpectralCentroid(),
+
 }
 
 
