@@ -76,10 +76,17 @@ def plot_harmonic_response(path_outdir, sr, gain, freq, feed_forward_func = None
 
     f = np.linspace(0, sr//2, num= num//2+1)
     H = normalize(np.fft.rfft(y))
+
+    #plt.figure(figsize=(5, 3))
+
     plt.semilogx(f, 20 * np.log10(np.abs(H)))
     plt.gca().xaxis.set_major_formatter(ticker.ScalarFormatter())
-    plt.xlabel('Frequency [Hz]')
-    plt.ylabel('Magnitude [dB]')
+    #plt.rcParams.update({'font.size': 14})
+    
+    plt.xlabel('Frequency [Hz]')#, fontsize=14
+    plt.ylabel('Magnitude [dB]')#, fontsize=14
+    # Increase tick label font size
+    #plt.tick_params(axis='both', which='major', labelsize=14)
     plt.tight_layout()
     plt.savefig(path_song_harmonic_response, dpi=600)
     plt.close()
@@ -125,6 +132,8 @@ def plot_sine_sweep_response_spec(path_outdir, sr, feed_forward_func = None, *ar
     #     sr=sr
     # )
 
+    #plt.figure(figsize=(5, 3))
+    
     S = np.abs(librosa.stft(y))
     spec = librosa.amplitude_to_db(S, ref=np.max)
     librosa.display.specshow(
@@ -134,7 +143,9 @@ def plot_sine_sweep_response_spec(path_outdir, sr, feed_forward_func = None, *ar
         sr=sr
     )
 
-    plt.title('Sine Sweep Response')
+    #plt.title('Sine Sweep Response')
+    
+    #plt.rcParams.update({'font.size': 14})
     plt.tight_layout()
     plt.savefig(path_song_harmonic_response, dpi=600)
     plt.close()

@@ -29,7 +29,7 @@ nn_model = utils.load_model(
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 # system plotting 
-plot_harmonic_response(path_outdir, args.data.sampling_rate, gain, freq, utils.forward_func, [1, 1], nn_model,  args.model.arch, device)
+#plot_harmonic_response(path_outdir, args.data.sampling_rate, gain, freq, utils.forward_func, [1, 1], nn_model,  args.model.arch, device)
 plot_sine_sweep_response_spec(path_outdir, args.data.sampling_rate, utils.forward_func, [1, 1],nn_model,  args.model.arch,  device)
 
 # wav comparison 

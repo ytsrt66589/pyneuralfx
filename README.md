@@ -112,7 +112,7 @@ PyNeuralFx supports two types of visualization:
 
 ## Training Frame Work Usage Flow 
 
-![image info](./assets/usage_flow.png)
+![image info](./assets/utg.png)
 
 (First run the command `cd frame_work`. Ensure that the working directory is `frame_work`)
 
@@ -164,3 +164,4 @@ This project is highly inspired by the following repositories, thanks to the ama
 * Jatin Chowdhurry medium ([link](https://jatinchowdhury18.medium.com/))
 * Hyper LSTM ([link](https://nn.labml.ai/hypernetworks/hyper_lstm.html))
 * GuitarML ([link](https://guitarml.com/))
+* SFI source separation ([link](https://github.com/TomohikoNakamura/sfi_convtasnet))
