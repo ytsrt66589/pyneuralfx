@@ -143,6 +143,15 @@ PyNeuralFx supports two types of visualization:
 
 Those datasets are collected from previous works, if you use them in your paper or in your project, please cite the corresponding paper. 
 
+## To-do 
+* [ ] Support [auraloss function](https://github.com/csteinmetz1/auraloss) 
+* [ ] Support DDSP-based neural audio effect modeling architecture 
+* [ ] Support more datasets as default 
+* [ ] Support analysis of computation cost
+* [ ] Adding tutorial about full-modeling scenario 
+* [ ] Adding tutorial about effect-chain modeling 
+* [ ] Support more pre-trained models on several audio effects  
+
 ## Contributing
 
 Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.

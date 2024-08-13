@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyneuralfx"
-version = "0.1.1"
+version = "0.1.2"
 description = "A python package for neural audio effect"
 authors = ["yytung"]
 license = "MIT"
