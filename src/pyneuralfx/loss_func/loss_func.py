@@ -302,7 +302,7 @@ class HybridLoss(torch.nn.Module):
         print('> [Loss] --- Hybrid Trans Loss ---')
 
         self.mae = L1Loss(pre_emp)
-        self.mrstft = STFTLoss(pre_emp=pre_emp)
+        self.mrstft = MRSTFTLoss(pre_emp=pre_emp)
 
     def forward(
         self, 
