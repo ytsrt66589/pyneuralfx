@@ -2,6 +2,11 @@
 
 A toolkit for neural audio effect modeling. Users can conduct experiments conveniently with this toolkit for audio effect modeling. 
 
+[PyNeuralFx paper](https://arxiv.org/abs/2408.06053) 
+
+[Powered by PyNeuralFx]
+* [Hyper Recurrent Neural Network: Condition Mechanisms for Black-box Audio Effect Modeling](https://arxiv.org/abs/2408.04829)
+
 ## Installation
 
 You can install PyNeuralFx via 
