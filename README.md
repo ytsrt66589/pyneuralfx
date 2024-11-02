@@ -1,5 +1,7 @@
 # PyNeuralFx
 
+![image info](./assets/logo.JPG)
+
 A toolkit for neural audio effect modeling. Users can conduct experiments conveniently with this toolkit for audio effect modeling. 
 
 [PyNeuralFx paper](https://arxiv.org/abs/2408.06053) 
